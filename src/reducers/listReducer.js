@@ -6,28 +6,28 @@ let cardID = 4;
 const initialState = [
   {
     title: "Title #1",
-    id: 0,
+    id: `list-${0}`,
     cards: [
       {
-        id: 0,
+        id:`card-${0}`,
         text: "Item #11"
       },
       {
-        id: 1,
+        id: `card-${1}`,
         text: "Item #12"
       }
     ]
   },
   {
     title: "Title #2",
-    id: 1,
+    id: `list-${1}`,
     cards: [
       {
-        id: 0,
+        id: `card-${2}`,
         text: "Item #21"
       },
       {
-        id: 1,
+        id: `card-${3}`,
         text: "Item #22"
       }
     ]
@@ -40,15 +40,15 @@ const listReducer = (state = initialState, action) => {
       const newList = {
         title: action.payload,
         cards: [],
-        id: listID
+        id: `list-${listID}`
       };
       listID += 1;
       return [...state, newList];
 
-    case CONSTANTS.ADD_CARD:
+    case CONSTANTS.ADD_CARD: {
       const newCard = {
         text: action.payload.text,
-        id: cardID
+        id: `card-${cardID}`
       };
       cardID += 1;
 
@@ -64,6 +64,26 @@ const listReducer = (state = initialState, action) => {
           return list;
         }
       });
+
+      return newState;
+    }
+
+    case CONSTANTS.DRAG_HAPPENED:
+      const {
+        droppableIdStart,
+        droppableIdEnd,
+        droppableIndexEnd,
+        droppableIndexStart,
+        draggableId
+      } = action.payload;
+      
+      const newState = [...state];
+      
+      if (droppableIdStart === droppableIdEnd) {
+        const list = state.find(list => droppableIdStart === list.id);
+	const card = list.cards.splice(droppableIndexStart, 1);
+        list.cards.splice(droppableIndexEnd, 0, ...card);
+      }
 
       return newState;
 

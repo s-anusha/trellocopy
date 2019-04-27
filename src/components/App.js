@@ -2,14 +2,41 @@ import React, { Component } from 'react';
 import List from "./List";
 import { connect } from "react-redux";
 import ActionButton from "./ActionButton";
+import { DragDropContext } from "react-beautiful-dnd";
+import { sort } from "../actions";
+import styled from "styled-components";
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 class App extends Component {
+  onDragEnd = result => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    this.props.dispatch(
+      sort(
+        source.droppableId,
+        destination.droppableId,
+        source.index,
+        destination.index,
+        draggableId
+      )
+    );
+  };
+
   render() {
     const { lists } = this.props;
     return (
+      <DragDropContext onDragEnd={this.onDragEnd}>
       <div>
         <h2>Board #1</h2>
-        <div style={styles.listsContainer}>
+        <ListContainer>
           {lists.map(list => (
             <List 
 		listID={list.id}
@@ -19,18 +46,12 @@ class App extends Component {
 	    />
           ))}
 	  <ActionButton list />
-        </div>
+        </ListContainer>
       </div>
+      </DragDropContext>
     );
   }
 }
-
-const styles = {
-  listsContainer: {
-    display: "flex",
-    flexDirection: "row",
-  }
-};
 
 const mapStateToProps = state => ({
   lists: state.lists
