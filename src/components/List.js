@@ -17,7 +17,12 @@ const List = ({title, cards, listID}) => {
   return (
     <Droppable droppableId={String(listID)}>
       {provided => (
-        <ListContainer {...provided.droppableProps} ref={provided.innerRef}>
+        <ListContainer
+	  {...provided.droppableProps}
+	  {...provided.dragHandleProps}
+	  ref={provided.innerRef}
+	>
+	  <h4>{title}</h4>
           {cards.map((card, index) => (
             <Item
               key={card.id}
@@ -26,8 +31,8 @@ const List = ({title, cards, listID}) => {
               index={index}
             />
           ))}
-	  <ActionButton listID={listID} />
           {provided.placeholder}
+	  <ActionButton listID={listID} />
         </ListContainer>
       )}
     </Droppable>
