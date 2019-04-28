@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import List from "./List";
 import { connect } from "react-redux";
-import ActionButton from "./ActionButton";
+import Create from "./Create";
 import { DragDropContext } from "react-beautiful-dnd";
 import { sort } from "../actions";
 import styled from "styled-components";
@@ -35,7 +35,7 @@ class App extends Component {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
       <div>
-        <h2>Board #1</h2>
+        <h2>Board</h2>
         <ListContainer>
           {lists.map(list => (
             <List 
@@ -45,7 +45,7 @@ class App extends Component {
 		cards={list.cards}
 	    />
           ))}
-	  <ActionButton list />
+	  <Create list />
         </ListContainer>
       </div>
       </DragDropContext>

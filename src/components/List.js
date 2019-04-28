@@ -1,6 +1,6 @@
 import React from "react";
 import Item from "./Card";
-import ActionButton from "./ActionButton";
+import Create from "./Create";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
@@ -29,10 +29,11 @@ const List = ({title, cards, listID}) => {
               text={card.text}
               id={card.id}
               index={index}
+	      listID={listID}
             />
           ))}
           {provided.placeholder}
-	  <ActionButton listID={listID} />
+	  <Create listID={listID} />
         </ListContainer>
       )}
     </Droppable>
